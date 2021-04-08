@@ -67,13 +67,32 @@
 
         /* stop preventDefault */
         event.preventDefault();
-
-        /* add class 'favorite' */
-        bookImage.classList.add(classNames.bookCart.imageFavorite);
-
+        
         /* find 'data-id' of bookImage */
         let id = bookImage.getAttribute('data-id');
         console.log(id);
+
+        /* check the book if it is in your favorites */
+        if(!favoriteBooks.includes(id) || bookImage.classList.contains(!classNames.bookCart.imageFavorite)){
+
+          /* if not add a favorite class */
+          bookImage.classList.add(classNames.bookCart.imageFavorite);
+
+          /* save id */
+          favoriteBooks.push(id);
+
+          /* check the book if it is in your favorites */
+        } else if(favoriteBooks.includes(id) || bookImage.classList.contains(classNames.bookCart.imageFavorite)){
+
+          /* check if the id is in the array */
+          const indexOfId = favoriteBooks.indexOf(id);
+
+          /* remove ID */
+          favoriteBooks.splice(indexOfId, 1);
+
+          /* remove class favorite */
+          bookImage.classList.remove(classNames.bookCart.imageFavorite);
+        }
       });
       console.log('favoriteBooks', favoriteBooks);
     }
