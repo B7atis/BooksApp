@@ -12,6 +12,9 @@
     },
     imageOf: {
       bookImage: '.book__image'
+    },
+    filtersOf: {
+      form: '.filters'
     }
   };
 
@@ -46,6 +49,7 @@
       bookContainer.appendChild(thisBooksList.element);
     }
   }
+  
 
   function initAction() {
     /* create an empty array */
@@ -55,9 +59,9 @@
     let booksList = document.querySelector(select.containerOf.booksList);
     console.log('booksList', booksList);
 
-    /* find all images in this list */
-    let booksImages = booksList.querySelectorAll(select.imageOf.bookImage);
-    console.log('bookImages', booksImages);
+    /* find filters of form */
+    const form = document.querySelector(select.filtersOf.form);
+    console.log('form', form);
 
     /* add eventListener for bookImage */
     booksList.addEventListener('dblclick', function(event){
@@ -96,6 +100,75 @@
       }
     });
     console.log('favoriteBooks', favoriteBooks);
+    
+    /* add eventListener for form */
+    form.addEventListener('click', function(event){
+
+      /* check if an element has been clicked */
+      if(event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter'){
+
+        /* if so, show its value in console */
+        console.log(event.target.value);
+
+        /* check if input is selected, if so true */
+        if(event.target.checked == true){
+
+          /* if so, add a value to the filters array */
+          filters.push(event.target.value);
+
+          /* check if input is selected, if so false */
+        } else if(event.target.checked == false){
+
+          /* if not, remove the filters from the array */
+          const indexOfFilters = filters.indexOf(event.target.value);
+          filters.splice(indexOfFilters, 1);
+        }
+        console.log('filters', filters);
+        filterBooks();
+      }
+    });
+  }
+
+  /* create an empty array */
+  const filters = [];
+
+  function filterBooks(){
+    /* create loops for all dataSource.books items */
+    for(let book of dataSource.books){
+
+      /* add the variable false */
+      let shouldBeHidden = false;
+
+      /* create loops for array filteres */
+      for(const filter of filters) {
+
+        /* check if the filter fits the book */
+        if(!book.details[filter]){
+
+          /* change a property and break the loop */
+          shouldBeHidden = true;
+          break;
+        }
+      }
+
+      /* find the book__image element */
+      const id = book.id;
+      console.log(id);
+      const item = document.querySelector('.book__image[data-id="' + id + '"]'); 
+
+      /* check the value of shouldBeHidden if so "true" */
+      if(shouldBeHidden == true){
+
+        /* add the hidden class */
+        item.classList.add('hidden');
+
+      /* check the value of shouldBeHidden if so "false" */
+      } else if(shouldBeHidden == false){
+
+        /* remove the hidden class */
+        item.classList.remove('hidden');
+      }
+    }
   }
 
 
