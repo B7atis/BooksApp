@@ -18,6 +18,7 @@
   const classNames = {
     bookCart: {
       imageFavorite: 'favorite',
+      bookClass: 'book__image',
     }
   };
 
@@ -58,31 +59,30 @@
     let booksImages = booksList.querySelectorAll(select.imageOf.bookImage);
     console.log('bookImages', booksImages);
 
-    /* make a loop to get image of one book */
-    for(let bookImage of booksImages) {
-      console.log('bookImages', bookImage);
+    /* add eventListener for bookImage */
+    booksList.addEventListener('dblclick', function(event){
 
-      /* add eventListener for bookImage */
-      bookImage.addEventListener('dblclick', function(event){
+      /* stop preventDefault */
+      event.preventDefault();
 
-        /* stop preventDefault */
-        event.preventDefault();
+      /* check if event.target has the class .book__image */
+      if(event.target.offsetParent.classList.contains(classNames.bookCart.bookClass)){
         
         /* find 'data-id' of bookImage */
-        let id = bookImage.getAttribute('data-id');
+        let id = event.target.offsetParent.getAttribute('data-id');
         console.log(id);
 
         /* check the book if it is in your favorites */
-        if(!favoriteBooks.includes(id) || bookImage.classList.contains(!classNames.bookCart.imageFavorite)){
+        if(!favoriteBooks.includes(id) || event.target.offsetParent.classList.contains(!classNames.bookCart.imageFavorite)){
 
           /* if not add a favorite class */
-          bookImage.classList.add(classNames.bookCart.imageFavorite);
+          event.target.offsetParent.classList.add(classNames.bookCart.imageFavorite);
 
           /* save id */
           favoriteBooks.push(id);
 
           /* check the book if it is in your favorites */
-        } else if(favoriteBooks.includes(id) || bookImage.classList.contains(classNames.bookCart.imageFavorite)){
+        } else if(favoriteBooks.includes(id) || event.target.offsetParent.classList.contains(classNames.bookCart.imageFavorite)){
 
           /* check if the id is in the array */
           const indexOfId = favoriteBooks.indexOf(id);
@@ -91,11 +91,11 @@
           favoriteBooks.splice(indexOfId, 1);
 
           /* remove class favorite */
-          bookImage.classList.remove(classNames.bookCart.imageFavorite);
+          event.target.offsetParent.classList.remove(classNames.bookCart.imageFavorite);
         }
-      });
-      console.log('favoriteBooks', favoriteBooks);
-    }
+      }
+    });
+    console.log('favoriteBooks', favoriteBooks);
   }
 
 
