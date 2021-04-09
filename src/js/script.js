@@ -30,6 +30,10 @@
     thisBooksList.data = dataSource.books;
 
     for(const book of thisBooksList.data) {
+      this.rating = book.rating;
+
+      book.ratingBgc = determineRatingBgc(this.rating);
+      book.ratingWidth = this.rating * 10;
             
       /* make a template for a book */
       const bookTemplate = Handlebars.compile(document.querySelector(select.templateOf.bookCart).innerHTML);
@@ -169,6 +173,20 @@
         item.classList.remove('hidden');
       }
     }
+  }
+
+  function determineRatingBgc(){
+    let background = '';
+    if(this.rating <= 6) {
+      background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+    } else if(this.rating > 6 && this.rating <= 8) {
+      background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+    } else if(this.rating > 8 && this.rating <= 9) {
+      background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+    } else if (this.rating > 9) {
+      background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+    }
+    return background;
   }
 
 
